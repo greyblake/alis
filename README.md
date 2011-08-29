@@ -8,30 +8,40 @@ In some cases `alis` UNIX tool can not satisfy us. For example how would make `g
 ## Installation
 
 Install alis ruby gem:
+
     gem install alis
 
 And then do:
+
     alis install
 
 
 ## Usage
 
 To get help run
+
     alis --help
+
 You can create, remove and list aliases with appropriate commands.
 
 To make `gem install` use `--no-rdoc` and `--no-ri` options just do:
+
     alis set --alias 'gem install' --tail '--no-rdoc --no-ri'
+
 To list you aliases do:
+
     alis list
+
 And the output must be something like this:
+
     ALIAS           EXECUTE         TAIL             
     gem install     gem install     --no-ri --no-rdoc
-ALIAS is what you type (alias name) to execute command.
 
-EXECUTE is what will be really executed. (if it's not specified it is the same as ALIAS)
+`ALIAS` is what you type (alias name) to execute command.
 
-TAIL is additional options or arguments which will be added to tail of command you typed.
+`EXECUTE` is what will be really executed. (if it's not specified it is the same as ALIAS)
+
+`TAIL` is additional options or arguments which will be added to tail of command you typed.
 
 This means when you run `gem install gem_name` next time really will be executed `gem install gem_name --no-rdoc --no-ri`
 
@@ -43,6 +53,7 @@ When you run `alis install` it creates $HOME/.alis directory and modifies your .
 When you create a new alias Alis creates executable file in $HOME/.alis/bin which handles aliases and runs original command.
 
 To locate original command you can use `alis which`:
+
     which gem
     /home/john_doe/.alis/bin/gem
     alis which gem
