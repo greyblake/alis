@@ -46,7 +46,7 @@ And the output must be something like this:
 This means when you run `gem install gem_name` next time really will be executed `gem install gem_name --no-rdoc --no-ri`
 
     
-## How does it works?
+## How does it work?
 
 When you run `alis install` it creates $HOME/.alis directory and modifies your .bashrc file to include $HOME/.alis/bin to PATH variable.
 
