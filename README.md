@@ -3,7 +3,7 @@ by Sergey Potaov (aka Blake)
 
 ## Why?
 
-In some cases `alis` UNIX tool can not satisfy us. For example how would make `gem install` use `--no-rdoc` and `--no-ri` options by default? That is why I create Alis. Alis is more flexible tool to create aliases.
+In some cases `alias` UNIX tool can not satisfy us. For example how would make `gem install` use `--no-rdoc` and `--no-ri` options by default? That is why I create Alis. Alis is more flexible tool to create aliases.
 
 ## Installation
 
