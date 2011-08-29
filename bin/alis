@@ -1,0 +1,118 @@
+#!/usr/bin/env ruby
+
+require 'rubygems'
+
+require 'commander'
+require 'commander/import'
+
+
+
+ROOT_DIR = File.expand_path(File.dirname(__FILE__) + "/..")
+require File.join(ROOT_DIR, 'lib/alis')
+
+Alis.env = ENV['ALIS_ENV'] || :user
+
+
+program :name       , 'Alis'
+program :version    , '0.0.0'
+program :description, 'Tool to create and manage custom aliases'
+default_command :help
+
+def assert_installation
+  unless Alis.installed?
+    puts "Run 'alis install' first"
+    exit 1
+  end
+end
+
+command :set do |c|
+  c.description = "Create a new alias"
+  c.syntax      = "alis set --alias 'ALIAS' [--execute 'COMMAND'] [--tail 'TAIL_ARGS']"
+
+  c.option '-a', '--alias ALIAS'    , 'Alias, e.g. "gem install"'
+  c.option '-e', '--execute COMMAND', 'Command which be really executed when an alias is called'
+  c.option '-z', '--tail ARGS'      , 'Additional arguments which will be concatenated to the tail of a command'
+
+
+  c.action do |args, opts|
+    assert_installation
+    opts.default :execute => opts.alias,
+                 :tail => ''
+
+    cmd_name, *params= opts.alias.split(/\s+/)
+    cmd = Alis::Cmd.get_or_create(cmd_name)
+    cmd.add_alias(params, opts.execute, opts.tail)
+    Alis.store.save!
+  end
+end
+
+
+command :remove do |c|
+  c.description = "Remove an alias"
+  c.syntax      = "alis --alias 'some alias'"
+
+  c.option '-a', '--alias ALIAS', 'Alias, e.g. "gem install"'
+
+  c.action do |args, opts|
+    assert_installation
+    raise "alias is not specified" unless opts.alias
+    cmd_name, *params = opts.alias.split(/\s+/)
+    cmd = Alis::Cmd.get(cmd_name)
+    cmd.remove_alias(params)
+    Alis.store.save!
+  end
+end
+
+
+
+command :which do |c|
+  c.description = "Locate a real command"
+  c.syntax      = "alis which COMMAND"
+
+  c.action do |args, opts|
+    assert_installation
+    puts Alis.full_path_for_cmd(args.first)
+  end
+end
+
+
+
+command :list do |c|
+  c.description = "List all aliases"
+  c.syntax      = "alis list"
+
+  c.action do |args, opts|
+    assert_installation
+    puts Alis.store.to_s
+  end
+end
+
+
+command :install do |c|
+  c.description = "Install Alis"
+  c.syntax      = "alis install"
+
+  c.action do |args, opts|
+    if Alis.installed? 
+      puts "Alis is already installed"
+    else
+      Alis.install!
+      puts "Alis is successfully installed"
+    end
+  end
+end
+
+
+command :uninstall do |c|
+  c.description = "Uninstall Alis"
+  c.syntax      = "alis uninstall"
+
+  c.action do |args, opts|
+    if Alis.installed?
+      Alis.uninstall!
+      puts "Alis is successfully uninstalled"
+    else
+      puts "Alis is not installed"
+    end
+  end
+end
