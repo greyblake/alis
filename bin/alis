@@ -14,13 +14,13 @@ Alis.env = ENV['ALIS_ENV'] || :user
 
 
 program :name       , 'Alis'
-program :version    , '0.0.0'
+program :version    , '0.0.1'
 program :description, 'Tool to create and manage custom aliases'
 default_command :help
 
 def assert_installation
   unless Alis.installed?
-    puts "Run 'alis install' first"
+    puts 'Run "alis install" first'
     exit 1
   end
 end
