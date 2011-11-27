@@ -1,5 +1,5 @@
 # Alis
-by Sergey Potaov (aka Blake)
+by Sergey Potapov (aka Blake)
 
 ## Why?
 
